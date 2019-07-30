@@ -40,8 +40,9 @@ public class AncillaryDataSvc {
 
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
 
-	@RequestMapping(value = Constants.PATH_GET_ANCILLARY, method = RequestMethod.POST, consumes = {
-			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = Constants.PATH_GET_ANCILLARY_BY_AIRPORTS, method = RequestMethod.GET, consumes = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
+					MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<PreferredAncillaryResponse> getAllAncillaryByAirports(
 			@RequestBody PreferredAncillaryRequest ancillaryRequest) {
 
@@ -58,12 +59,10 @@ public class AncillaryDataSvc {
 			if (ancillaryRequest != null && ancillaryRequest.getDestAirportCode() != null) {
 				response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
 			}
-
 			response.setFault(CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2001, Constants.ERROR_MSG_2001));
 		} else {
 			try {
 				response = ancillaryMgmtBO.getPreferredAncillariesByAirports(ancillaryRequest);
-
 				if (null == response) {
 					logger.debug("Airport details are not available in database: {}", ancillaryRequest);
 					response = new PreferredAncillaryResponse();
@@ -71,7 +70,6 @@ public class AncillaryDataSvc {
 					response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
 					response.setFault(
 							CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2002, Constants.ERROR_MSG_2002));
-
 				} else if (response.getPreferredAncillaries().isEmpty()) {
 					logger.debug("No data found for the given airport: {}", ancillaryRequest);
 					response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
@@ -108,7 +106,7 @@ public class AncillaryDataSvc {
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
 		return new ResponseEntity<AncillaryDetails>(ancillaryDetails, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY, method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<AncillaryDetails> getAncillaryById(@RequestParam(required = true) int ancillaryId) {
@@ -116,7 +114,7 @@ public class AncillaryDataSvc {
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
 		return new ResponseEntity<AncillaryDetails>(ancillaryDetails, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = Constants.PATH_GET_ALL_ANCILLARY, method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<List<AncillaryDetails>> getAllAncillaries() {

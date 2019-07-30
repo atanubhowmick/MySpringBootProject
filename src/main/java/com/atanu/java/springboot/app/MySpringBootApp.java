@@ -21,6 +21,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import com.atanu.java.springboot.logger.ApplicationLogger;
 import com.atanu.java.springboot.service.AncillaryDataSvc;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 /**
  * 
  * @author ATANU BHOWMICK
@@ -32,6 +34,7 @@ import com.atanu.java.springboot.service.AncillaryDataSvc;
         DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class })
+@EnableSwagger2
 public class MySpringBootApp {
 
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
