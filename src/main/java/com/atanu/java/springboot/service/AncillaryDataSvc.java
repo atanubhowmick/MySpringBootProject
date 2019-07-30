@@ -41,8 +41,7 @@ public class AncillaryDataSvc {
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
 
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY_BY_AIRPORTS, method = RequestMethod.GET, consumes = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-					MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<PreferredAncillaryResponse> getAllAncillaryByAirports(
 			@RequestBody PreferredAncillaryRequest ancillaryRequest) {
 
