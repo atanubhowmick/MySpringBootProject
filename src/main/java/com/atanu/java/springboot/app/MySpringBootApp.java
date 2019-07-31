@@ -1,5 +1,6 @@
 package com.atanu.java.springboot.app;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -21,6 +22,13 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import com.atanu.java.springboot.logger.ApplicationLogger;
 import com.atanu.java.springboot.service.AncillaryDataSvc;
 
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -64,7 +72,7 @@ public class MySpringBootApp {
  
     @Autowired
     @Bean(name = "sessionFactory")
-    public SessionFactory getSessionFactory(DataSource dataSource) throws Exception {
+    public SessionFactory getSessionFactory(DataSource dataSource) throws IOException {
         
     	logger.info("Creating Session Factory..");
     	Properties properties = new Properties();
@@ -85,7 +93,7 @@ public class MySpringBootApp {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
  
         // Packages to scan for entity classes
-        factoryBean.setPackagesToScan(new String[] { "com.atanu.java.springboot.entity" });
+        factoryBean.setPackagesToScan("com.atanu.java.springboot.entity");
         factoryBean.setDataSource(dataSource);
         factoryBean.setHibernateProperties(properties);
         factoryBean.afterPropertiesSet();
@@ -103,4 +111,18 @@ public class MySpringBootApp {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
         return transactionManager;
     }
+    
+    @Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.atanu.java.springboot.service"))
+				.paths(PathSelectors.regex("/.*")).build().apiInfo(apiEndPointsInfo());
+	}
+
+	private ApiInfo apiEndPointsInfo() {
+		return new ApiInfoBuilder().title("Spring Boot REST API").description("Data Svc Springboot REST API")
+				.contact(new Contact("Atanu Bhowmick", "localhost", "mail2atanu007@gmail.com"))
+				.license("Apache 2.0").licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html").version("1.0.0")
+				.build();
+	}
 }

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.atanu.java.springboot.bo.AncillaryMgmtBO;
 import com.atanu.java.springboot.constant.Constants;
-import com.atanu.java.springboot.exception.DataSvcException;
 import com.atanu.java.springboot.logger.ApplicationLogger;
 import com.atanu.java.springboot.model.AncillaryDetails;
 import com.atanu.java.springboot.model.PreferredAncillaryRequest;
@@ -79,12 +78,6 @@ public class AncillaryDataSvc {
 					logger.debug("Data processing successful.");
 					response.setFault(CommonUtils.createFaultDOForSuccess());
 				}
-			} catch (DataSvcException e) {
-				response = new PreferredAncillaryResponse();
-				response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
-				response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
-				response.setFault(CommonUtils.createFaultDOForError(e.getErrorCode(), e.getErrorMsg()));
-				logger.error(e.getErrorMsg(), e);
 			} catch (Exception e) {
 				response = new PreferredAncillaryResponse();
 				response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
@@ -94,8 +87,7 @@ public class AncillaryDataSvc {
 				logger.error("Exception occurred in getAllAncillaryByAirports: ", e);
 			}
 		}
-
-		return new ResponseEntity<PreferredAncillaryResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY + "/{ancillaryId}", method = RequestMethod.GET, produces = {
@@ -103,7 +95,7 @@ public class AncillaryDataSvc {
 	public ResponseEntity<AncillaryDetails> getAncillary(@PathVariable("ancillaryId") int ancillaryId) {
 		logger.debug("Inside getAncillary()");
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
-		return new ResponseEntity<AncillaryDetails>(ancillaryDetails, HttpStatus.OK);
+		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY, method = RequestMethod.GET, produces = {
@@ -111,7 +103,7 @@ public class AncillaryDataSvc {
 	public ResponseEntity<AncillaryDetails> getAncillaryById(@RequestParam(required = true) int ancillaryId) {
 		logger.debug("Inside getAncillaryById()");
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
-		return new ResponseEntity<AncillaryDetails>(ancillaryDetails, HttpStatus.OK);
+		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = Constants.PATH_GET_ALL_ANCILLARY, method = RequestMethod.GET, produces = {
@@ -119,6 +111,6 @@ public class AncillaryDataSvc {
 	public ResponseEntity<List<AncillaryDetails>> getAllAncillaries() {
 		logger.debug("Inside getAllAncillaries()");
 		List<AncillaryDetails> ancillaries = ancillaryMgmtBO.getAllAncillary();
-		return new ResponseEntity<List<AncillaryDetails>>(ancillaries, HttpStatus.OK);
+		return new ResponseEntity<>(ancillaries, HttpStatus.OK);
 	}
 }
