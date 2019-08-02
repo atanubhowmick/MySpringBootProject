@@ -119,6 +119,10 @@ public class MySpringBootApp {
 				.paths(PathSelectors.regex("/.*")).build().apiInfo(apiEndPointsInfo());
 	}
 
+    /**
+     * 
+     * @return ApiInfo
+     */
 	private ApiInfo apiEndPointsInfo() {
 		return new ApiInfoBuilder().title("Spring Boot REST API").description("Data Svc Springboot REST API")
 				.contact(new Contact("Atanu Bhowmick", "localhost", "mail2atanu007@gmail.com"))

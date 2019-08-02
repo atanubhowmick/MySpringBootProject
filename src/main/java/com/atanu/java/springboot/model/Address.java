@@ -3,7 +3,7 @@ package com.atanu.java.springboot.model;
 import java.io.Serializable;
 
 /**
- * @author Jax
+ * @author Atanu Bhowmick
  *
  */
 public class Address implements Serializable {
