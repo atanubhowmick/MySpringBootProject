@@ -20,7 +20,7 @@ import com.atanu.java.springboot.model.PreferredAncillaryRequest;
 import com.atanu.java.springboot.model.PreferredAncillaryResponse;
 
 /**
- * @author ATANU
+ * @author Atanu Bhowmick
  *
  */
 
@@ -58,18 +58,11 @@ public class AncillaryMgmtBO {
 	}
 	
 	/**
-	 * @param ancillaryRequest
-	 */
-	public void updateAncillaryDetails(PreferredAncillaryRequest ancillaryRequest) {
-		AncillaryDetailsEntity ancillaryEntity = entityConverter.convertPreferredAncillaryRequestToAncillaryDetailsEntity(ancillaryRequest);
-		ancillaryDAO.updateAncillaryDetails(ancillaryEntity);
-	}
-	
-	/**
 	 * @param ancillaryId
 	 * @return AncillaryDetails
+	 * @throws DataSvcException 
 	 */
-	public AncillaryDetails getAncillaryDetailsById(int ancillaryId) {
+	public AncillaryDetails getAncillaryDetailsById(Integer ancillaryId) throws DataSvcException {
 		return entityConverter
 				.convertAncillaryDetailsEntityToAncillaryDetails(ancillaryDAO
 						.getAncillaryDetailsById(ancillaryId));
@@ -90,12 +83,39 @@ public class AncillaryMgmtBO {
 	 */
 	public List<AncillaryDetails> getAllAncillary() {
 		List<AncillaryDetails> ancillaries = new ArrayList<AncillaryDetails>();
-		List<AncillaryDetailsEntity> list = ancillaryDAO.getAllAncillary();
+		List<AncillaryDetailsEntity> list = ancillaryDAO.getAllAncillaries();
 		for (AncillaryDetailsEntity ancillaryDetailsEntity : list){
 			ancillaries.add(entityConverter
 					.convertAncillaryDetailsEntityToAncillaryDetails(ancillaryDetailsEntity));
 		}
 		
 		return ancillaries;
+	}
+	
+	/**
+	 * @param ancillaryRequest
+	 * @throws DataSvcException 
+	 */
+	public AncillaryDetails saveAncillaryDetails(AncillaryDetails ancillaryDetails) throws DataSvcException {
+		AncillaryDetailsEntity ancillaryEntity = entityConverter.convertAncillaryDetailsToAncillaryDetailsEntity(ancillaryDetails);
+		Integer ancillaryId = ancillaryDAO.saveAncillaryDetails(ancillaryEntity);
+		return entityConverter.convertAncillaryDetailsEntityToAncillaryDetails(ancillaryDAO.getAncillaryDetailsById(ancillaryId));
+	}
+	
+	/**
+	 * @param ancillaryRequest
+	 */
+	public void updateAncillaryDetails(AncillaryDetails ancillaryDetails) {
+		AncillaryDetailsEntity ancillaryEntity = entityConverter.convertAncillaryDetailsToAncillaryDetailsEntity(ancillaryDetails);
+		ancillaryDAO.updateAncillaryDetails(ancillaryEntity);
+	}
+	
+	/**
+	 * @param ancillaryRequest
+	 * @throws DataSvcException 
+	 */
+	public void deleteAncillaryDetails(int ancillaryId) throws DataSvcException {
+		AncillaryDetailsEntity ancillaryEntity = ancillaryDAO.getAncillaryDetailsById(ancillaryId);
+		ancillaryDAO.deleteAncillaryDetails(ancillaryEntity);
 	}
 }

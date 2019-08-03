@@ -3,6 +3,8 @@
  */
 package com.atanu.java.springboot.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * @author ATANU
  *
@@ -16,10 +18,11 @@ public class DataSvcException extends Exception {
 
 	private String errorCode;
 	private String errorMsg;
-
-	public DataSvcException(Throwable e) {
+	private HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+	
+	/*public DataSvcException(Throwable e) {
 		super(e);
-	}
+	}*/
 
 	public DataSvcException(String errorCode, String errorMsg, Throwable e) {
 		super(errorMsg, e);
@@ -31,6 +34,20 @@ public class DataSvcException extends Exception {
 		super(errorMsg);
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
+	}
+	
+	public DataSvcException(String errorCode, String errorMsg, HttpStatus httpStatus) {
+		super(errorMsg);
+		this.errorCode = errorCode;
+		this.errorMsg = errorMsg;
+		this.httpStatus = httpStatus;
+	}
+	
+	public DataSvcException(String errorCode, String errorMsg, HttpStatus httpStatus, Throwable e) {
+		super(errorMsg, e);
+		this.errorCode = errorCode;
+		this.errorMsg = errorMsg;
+		this.httpStatus = httpStatus;
 	}
 
 	@Override
@@ -48,5 +65,9 @@ public class DataSvcException extends Exception {
 
 	public String getErrorMsg() {
 		return errorMsg;
+	}
+
+	public HttpStatus getHttpStatus() {
+		return httpStatus;
 	}
 }

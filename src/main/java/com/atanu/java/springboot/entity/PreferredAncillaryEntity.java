@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * @author ATANU
+ * @author Atanu Bhowmick
  *
  */
 
@@ -21,9 +21,6 @@ import javax.persistence.Table;
 @Table(name = "PREFFERED_ANCILLARY", catalog = "PERSONALISED_OFFER_DB")
 public class PreferredAncillaryEntity implements Serializable {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = 5264353918215076417L;
 
 	private String id;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.atanu.java.springboot.service;
+package com.atanu.java.springboot.resource;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;

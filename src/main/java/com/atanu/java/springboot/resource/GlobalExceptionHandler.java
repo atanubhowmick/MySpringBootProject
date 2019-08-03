@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.atanu.java.springboot.service;
+package com.atanu.java.springboot.resource;
 
 import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<FaultDO> handleDataSvcException(DataSvcException ex) {
 		logger.error("Handling DataSvcException... ", ex);
 		FaultDO fault = CommonUtils.createFaultDOForError(ex.getErrorCode(), ex.getErrorMsg());
-		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(fault, ex.getHttpStatus());
 	}
 
 	@ExceptionHandler(HibernateException.class)
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(TransactionException.class)
-	public ResponseEntity<FaultDO> handleJDBCConnectionExceptionException(TransactionException ex) {
+	public ResponseEntity<FaultDO> handleJDBCConnectionException(TransactionException ex) {
 		logger.error("Handling TransactionException... ", ex);
 		FaultDO fault = CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2005, ex.getMessage());
 		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,4 +53,5 @@ public class GlobalExceptionHandler {
 		FaultDO fault = CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2005, Constants.ERROR_MSG_2005);
 		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
 }

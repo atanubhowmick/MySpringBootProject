@@ -18,6 +18,9 @@ public class Constants {
 	public static final String PATH_GET_ANCILLARY 				= "/getAncillary";
 	public static final String PATH_GET_ANCILLARY_BY_AIRPORTS	= "/getAncillaryByAirports";
 	public static final String PATH_GET_ALL_ANCILLARY 			= "/getAllAncillary";
+	public static final String PATH_SAVE_ANCILLARY 				= "/save";
+	public static final String PATH_UPDATE_ANCILLARY 			= "/update";
+	public static final String PATH_DELETE_ANCILLARY 			= "/delete";
 	
 	public static final String SUCCESS							= "SUCCESS";
 	public static final String ERROR							= "ERROR";
@@ -27,10 +30,12 @@ public class Constants {
 	public static final String ERROR_CODE_2003					= "2003";
 	public static final String ERROR_CODE_2004					= "2004";
 	public static final String ERROR_CODE_2005					= "2005";
+	public static final String ERROR_CODE_2006					= "2006";
 	
 	public static final String ERROR_MSG_2001					= "Database error. Unable to retrieve data.";
 	public static final String ERROR_MSG_2002					= "Origin/Destination airport can't be empty.";
 	public static final String ERROR_MSG_2003					= "Airport details are not available in database.";
 	public static final String ERROR_MSG_2004					= "Ancillary details is not available for the airports.";
 	public static final String ERROR_MSG_2005					= "Unexcepted error occurred. Please try again later.";
+	public static final String ERROR_MSG_2006					= "No Data Found";
 }

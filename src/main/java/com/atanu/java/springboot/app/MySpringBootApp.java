@@ -20,20 +20,11 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import com.atanu.java.springboot.logger.ApplicationLogger;
-import com.atanu.java.springboot.service.AncillaryDataSvc;
-
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import com.atanu.java.springboot.resource.AncillaryDataSvc;
 
 /**
  * 
- * @author ATANU BHOWMICK
+ * @author Atanu Bhowmick
  *
  */
 
@@ -42,7 +33,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class })
-@EnableSwagger2
 public class MySpringBootApp {
 
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
@@ -73,7 +63,6 @@ public class MySpringBootApp {
     @Autowired
     @Bean(name = "sessionFactory")
     public SessionFactory getSessionFactory(DataSource dataSource) throws IOException {
-        
     	logger.info("Creating Session Factory..");
     	Properties properties = new Properties();
  
@@ -111,22 +100,4 @@ public class MySpringBootApp {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
         return transactionManager;
     }
-    
-    @Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.atanu.java.springboot.service"))
-				.paths(PathSelectors.regex("/.*")).build().apiInfo(apiEndPointsInfo());
-	}
-
-    /**
-     * 
-     * @return ApiInfo
-     */
-	private ApiInfo apiEndPointsInfo() {
-		return new ApiInfoBuilder().title("Spring Boot REST API").description("Data Svc Springboot REST API")
-				.contact(new Contact("Atanu Bhowmick", "localhost", "mail2atanu007@gmail.com"))
-				.license("Apache 2.0").licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html").version("1.0.0")
-				.build();
-	}
 }

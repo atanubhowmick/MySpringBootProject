@@ -28,7 +28,7 @@ public class PreferredAncillaryRequest implements Serializable {
 	private int ancillaryCount;
 	
 	@ApiModelProperty(value = "Ancillary Id", example = "101")
-	private int ancillaryId;
+	private Integer ancillaryId;
 	
 	@ApiModelProperty(value = "Ancillary Name", example = "Wifi")
 	private String ancillaryName;
@@ -60,11 +60,11 @@ public class PreferredAncillaryRequest implements Serializable {
 		this.ancillaryCount = ancillaryCount;
 	}
 	
-	public int getAncillaryId() {
+	public Integer getAncillaryId() {
 		return ancillaryId;
 	}
 
-	public void setAncillaryId(int ancillaryId) {
+	public void setAncillaryId(Integer ancillaryId) {
 		this.ancillaryId = ancillaryId;
 	}
 

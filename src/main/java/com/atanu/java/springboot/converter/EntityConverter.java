@@ -12,47 +12,47 @@ import com.atanu.java.springboot.entity.PreferredAncillaryEntity;
 import com.atanu.java.springboot.model.AncillaryDetails;
 import com.atanu.java.springboot.model.PreferredAncillaryRequest;
 import com.atanu.java.springboot.model.PreferredAncillaryResponse;
+import com.atanu.java.springboot.utils.StringUtils;
 
 /**
- * @author ATANU
+ * @author Atanu Bhowmick
  *
  */
 
 @Component
 public class EntityConverter {
-	
+
 	/**
 	 * @param prefferedAncillaryEntities
 	 * @return PreferredAncillaryResponse
 	 */
-	public PreferredAncillaryResponse convertPreferredAncillaryEntityToPreferredAncillaryResponse(List<PreferredAncillaryEntity> prefferedAncillaryEntities){
-		PreferredAncillaryResponse suggestedAncillary= null;
-		if(null != prefferedAncillaryEntities && !prefferedAncillaryEntities.isEmpty()){
+	public PreferredAncillaryResponse convertPreferredAncillaryEntityToPreferredAncillaryResponse(
+			List<PreferredAncillaryEntity> prefferedAncillaryEntities) {
+		PreferredAncillaryResponse suggestedAncillary = null;
+		if (null != prefferedAncillaryEntities && !prefferedAncillaryEntities.isEmpty()) {
 			suggestedAncillary = new PreferredAncillaryResponse();
-			
+
 			suggestedAncillary.setOriginAirportCode(prefferedAncillaryEntities.get(0).getOriginAirportCode());
 			suggestedAncillary.setDestAirportCode(prefferedAncillaryEntities.get(0).getDestAirportCode());
-			
-			for(PreferredAncillaryEntity prefferedAncillaryEntity : prefferedAncillaryEntities){
-				suggestedAncillary
-						.getPreferredAncillaries()
-						.add(convertAncillaryDetailsEntityToAncillaryDetails(prefferedAncillaryEntity
-								.getAncillaryDetails()));
+
+			for (PreferredAncillaryEntity prefferedAncillaryEntity : prefferedAncillaryEntities) {
+				suggestedAncillary.getPreferredAncillaries().add(convertAncillaryDetailsEntityToAncillaryDetails(
+						prefferedAncillaryEntity.getAncillaryDetails()));
 			}
 		}
 		return suggestedAncillary;
 	}
-	
+
 	/**
 	 * @param ancillaryDetailsEntity
 	 * @return AncillaryDetails
 	 */
-	public AncillaryDetails convertAncillaryDetailsEntityToAncillaryDetails(AncillaryDetailsEntity ancillaryDetailsEntity){
+	public AncillaryDetails convertAncillaryDetailsEntityToAncillaryDetails(
+			AncillaryDetailsEntity ancillaryDetailsEntity) {
 		AncillaryDetails ancillaryDetails = null;
-		
-		if(null != ancillaryDetailsEntity){
+		if (null != ancillaryDetailsEntity) {
 			ancillaryDetails = new AncillaryDetails();
-			if(0 != ancillaryDetailsEntity.getAncillaryId()) {
+			if (null != ancillaryDetailsEntity.getAncillaryId()) {
 				ancillaryDetails.setAncillaryId(Integer.toString(ancillaryDetailsEntity.getAncillaryId()));
 			}
 			ancillaryDetails.setAncillaryName(ancillaryDetailsEntity.getAncillaryName());
@@ -60,20 +60,22 @@ public class EntityConverter {
 		}
 		return ancillaryDetails;
 	}
-	
+
 	/**
 	 * @param ancillaryRequest
 	 * @return PreferredAncillaryEntity
 	 */
-	public PreferredAncillaryEntity convertPreferredAncillaryRequestToPreferredAncillaryEntity(PreferredAncillaryRequest ancillaryRequest){
-		PreferredAncillaryEntity prefferedAncillaryEntity= null;
-		if(null != ancillaryRequest){
+	public PreferredAncillaryEntity convertPreferredAncillaryRequestToPreferredAncillaryEntity(
+			PreferredAncillaryRequest ancillaryRequest) {
+		PreferredAncillaryEntity prefferedAncillaryEntity = null;
+		if (null != ancillaryRequest) {
 			prefferedAncillaryEntity = new PreferredAncillaryEntity();
-			prefferedAncillaryEntity.setId(ancillaryRequest.getOriginAirportCode() + ancillaryRequest.getDestAirportCode() + ancillaryRequest.getAncillaryId());
+			prefferedAncillaryEntity.setId(ancillaryRequest.getOriginAirportCode()
+					+ ancillaryRequest.getDestAirportCode() + ancillaryRequest.getAncillaryId());
 			prefferedAncillaryEntity.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
 			prefferedAncillaryEntity.setDestAirportCode(ancillaryRequest.getDestAirportCode());
 			prefferedAncillaryEntity.setAncillaryCount(ancillaryRequest.getAncillaryCount());
-			
+
 			AncillaryDetailsEntity ancillaryDetailsEntity = new AncillaryDetailsEntity();
 			ancillaryDetailsEntity.setAncillaryId(ancillaryRequest.getAncillaryId());
 			ancillaryDetailsEntity.setAncillaryName(ancillaryRequest.getAncillaryName());
@@ -83,29 +85,47 @@ public class EntityConverter {
 		}
 		return prefferedAncillaryEntity;
 	}
-	
+
 	/**
 	 * @param ancillaryRequest
 	 * @return AncillaryDetailsEntity
 	 */
-	public AncillaryDetailsEntity convertPreferredAncillaryRequestToAncillaryDetailsEntity(PreferredAncillaryRequest ancillaryRequest){
+	public AncillaryDetailsEntity convertPreferredAncillaryRequestToAncillaryDetailsEntity(
+			PreferredAncillaryRequest ancillaryRequest) {
 		AncillaryDetailsEntity ancillaryDetailsEntity = null;
-		if(null != ancillaryRequest){
-			
+		if (null != ancillaryRequest) {
 			ancillaryDetailsEntity = new AncillaryDetailsEntity();
 			ancillaryDetailsEntity.setAncillaryId(ancillaryRequest.getAncillaryId());
 			ancillaryDetailsEntity.setAncillaryName(ancillaryRequest.getAncillaryName());
 			ancillaryDetailsEntity.setAncillaryDesc(ancillaryRequest.getAncillaryDesc());
-			
+
 			PreferredAncillaryEntity prefferedAncillaryEntity = new PreferredAncillaryEntity();
-			prefferedAncillaryEntity.setId(ancillaryRequest.getOriginAirportCode() + ancillaryRequest.getDestAirportCode() + ancillaryRequest.getAncillaryId());
+			prefferedAncillaryEntity.setId(ancillaryRequest.getOriginAirportCode()
+					+ ancillaryRequest.getDestAirportCode() + ancillaryRequest.getAncillaryId());
 			prefferedAncillaryEntity.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
 			prefferedAncillaryEntity.setDestAirportCode(ancillaryRequest.getDestAirportCode());
 			prefferedAncillaryEntity.setAncillaryCount(ancillaryRequest.getAncillaryCount());
-			
+
 			prefferedAncillaryEntity.setAncillaryDetails(ancillaryDetailsEntity);
 			ancillaryDetailsEntity.getPreferredAncillaries().add(prefferedAncillaryEntity);
 		}
 		return ancillaryDetailsEntity;
+	}
+
+	/**
+	 * @param ancillaryDetails
+	 * @return AncillaryDetailsEntity
+	 */
+	public AncillaryDetailsEntity convertAncillaryDetailsToAncillaryDetailsEntity(AncillaryDetails ancillaryDetails) {
+		AncillaryDetailsEntity entity = null;
+		if (ancillaryDetails != null) {
+			entity = new AncillaryDetailsEntity();
+			if(StringUtils.isNumeric(ancillaryDetails.getAncillaryId())) {
+				entity.setAncillaryId(Integer.parseInt(ancillaryDetails.getAncillaryId()));
+			}
+			entity.setAncillaryName(ancillaryDetails.getAncillaryName());
+			entity.setAncillaryDesc(ancillaryDetails.getAncillaryDesc());
+		}
+		return entity;
 	}
 }

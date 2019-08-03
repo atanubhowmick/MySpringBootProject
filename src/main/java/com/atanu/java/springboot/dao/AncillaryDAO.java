@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,20 +61,19 @@ public class AncillaryDAO {
 		session.clear();
 	}
 	
-	public void updateAncillaryDetails(AncillaryDetailsEntity ancillaryEntity){
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(ancillaryEntity);
-		session.flush();
-		session.clear();
-	}
 	
 	/**
 	 * @param ancillaryId
 	 * @return AncillaryDetailsEntity
+	 * @throws DataSvcException 
 	 */
-	public AncillaryDetailsEntity getAncillaryDetailsById(int ancillaryId){
+	public AncillaryDetailsEntity getAncillaryDetailsById(Integer ancillaryId) throws DataSvcException{
 		Session session = sessionFactory.getCurrentSession();
-		return (AncillaryDetailsEntity) session.load(AncillaryDetailsEntity.class, ancillaryId);
+		AncillaryDetailsEntity entity = (AncillaryDetailsEntity) session.get(AncillaryDetailsEntity.class, ancillaryId);
+		if (entity == null) {
+			throw new DataSvcException(Constants.ERROR_CODE_2006, Constants.ERROR_MSG_2006, HttpStatus.NOT_FOUND);
+		}
+		return entity;
 	}
 	
 	/**
@@ -95,8 +95,40 @@ public class AncillaryDAO {
 	 * @return List
 	 */
 	@SuppressWarnings("unchecked")
-	public List<AncillaryDetailsEntity> getAllAncillary() {
+	public List<AncillaryDetailsEntity> getAllAncillaries() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<AncillaryDetailsEntity>) session.createQuery("FROM AncillaryDetailsEntity").list();
+	}
+
+	/**
+	 * @param ancillaryEntity
+	 * @return
+	 */
+	public Integer saveAncillaryDetails(AncillaryDetailsEntity ancillaryEntity){
+		Session session = sessionFactory.getCurrentSession();
+		Integer ancillaryId = (Integer) session.save(ancillaryEntity);
+		session.flush();
+		session.clear();
+		return ancillaryId;
+	}
+	
+	/**
+	 * @param ancillaryEntity
+	 */
+	public void updateAncillaryDetails(AncillaryDetailsEntity ancillaryEntity){
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(ancillaryEntity);
+		session.flush();
+		session.clear();
+	}
+	
+	/**
+	 * @param ancillaryEntity
+	 */
+	public void deleteAncillaryDetails(AncillaryDetailsEntity ancillaryEntity){
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(ancillaryEntity);
+		session.flush();
+		session.clear();
 	}
 }

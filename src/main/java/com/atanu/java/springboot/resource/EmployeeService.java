@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.atanu.java.springboot.service;
+package com.atanu.java.springboot.resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
