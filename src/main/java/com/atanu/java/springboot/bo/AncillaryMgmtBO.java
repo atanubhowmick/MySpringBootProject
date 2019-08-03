@@ -104,10 +104,12 @@ public class AncillaryMgmtBO {
 	
 	/**
 	 * @param ancillaryRequest
+	 * @throws DataSvcException 
 	 */
-	public void updateAncillaryDetails(AncillaryDetails ancillaryDetails) {
+	public AncillaryDetails updateAncillaryDetails(AncillaryDetails ancillaryDetails) throws DataSvcException {
 		AncillaryDetailsEntity ancillaryEntity = entityConverter.convertAncillaryDetailsToAncillaryDetailsEntity(ancillaryDetails);
 		ancillaryDAO.updateAncillaryDetails(ancillaryEntity);
+		return entityConverter.convertAncillaryDetailsEntityToAncillaryDetails(ancillaryDAO.getAncillaryDetailsById(ancillaryEntity.getAncillaryId()));
 	}
 	
 	/**

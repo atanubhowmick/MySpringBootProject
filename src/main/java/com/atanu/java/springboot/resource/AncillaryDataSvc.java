@@ -49,7 +49,8 @@ public class AncillaryDataSvc {
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
 
 	@ApiOperation(value = "Get ancilarry by Id", response = AncillaryDetails.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
 			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) 
 	})
@@ -64,14 +65,15 @@ public class AncillaryDataSvc {
 	}
 
 	@ApiOperation(value = "Get ancilarry by Id", response = AncillaryDetails.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
 			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) })
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY, method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<AncillaryDetails> getAncillaryById(
 			@ApiParam(value = "Ancillary Id in request param", required = true) 
-			@RequestParam(required = true) int ancillaryId) throws DataSvcException {
+			@RequestParam(required = true) Integer ancillaryId) throws DataSvcException {
 		logger.debug("Inside getAncillaryById()");
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
@@ -91,15 +93,16 @@ public class AncillaryDataSvc {
 	}
 
 	@ApiOperation(value = "Get list of the avaliable ancilarries between two airports", response = PreferredAncillaryResponse.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
 			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) 
 	})
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY_BY_AIRPORTS, method = RequestMethod.GET, consumes = {
 			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<PreferredAncillaryResponse> getAllAncillaryByAirports(
-			@ApiParam(value = "Send origin and destination airport code in the request", required = true) @RequestBody PreferredAncillaryRequest ancillaryRequest) {
-
+			@ApiParam(value = "Send origin and destination airport code in the request", required = true) 
+			@RequestBody PreferredAncillaryRequest ancillaryRequest) {
 		logger.debug("Inside getAllAncillary()");
 		PreferredAncillaryResponse response = new PreferredAncillaryResponse();
 		if (null == ancillaryRequest || StringUtils.isEmpty(ancillaryRequest.getOriginAirportCode())
@@ -147,7 +150,9 @@ public class AncillaryDataSvc {
 	}
 
 	@ApiOperation(value = "Save Ancilarry", response = AncillaryDetails.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully saved the ancillary", response = AncillaryDetails.class),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully saved the ancillary", response = AncillaryDetails.class),
+			@ApiResponse(code = 409, message = Constants.ERROR_MSG_2007, response = FaultDO.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) 
 	})
 	@RequestMapping(value = Constants.PATH_SAVE_ANCILLARY, method = RequestMethod.POST, produces = {
@@ -161,14 +166,15 @@ public class AncillaryDataSvc {
 	}
 
 	@ApiOperation(value = "Update Ancilarry", response = AncillaryDetails.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully saved the ancillary", response = AncillaryDetails.class),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully saved the ancillary", response = AncillaryDetails.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) 
 	})
 	@RequestMapping(value = Constants.PATH_UPDATE_ANCILLARY, method = RequestMethod.PUT, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<AncillaryDetails> updateAncillary(
 			@ApiParam(value = "Ancillary Details in RequestBody", required = true) 
-			@RequestBody(required = true) AncillaryDetails ancillaryDetails) {
+			@RequestBody(required = true) AncillaryDetails ancillaryDetails) throws DataSvcException {
 		logger.debug("Inside getAncillary()");
 		ancillaryMgmtBO.updateAncillaryDetails(ancillaryDetails);
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
@@ -182,7 +188,7 @@ public class AncillaryDataSvc {
 	@RequestMapping(value = Constants.PATH_DELETE_ANCILLARY
 			+ "/{ancillaryId}", method = RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> deleteAncillary(
-			@ApiParam(value = "Ancillary Id in path param", required = true) @PathVariable("ancillaryId") int ancillaryId) throws DataSvcException {
+			@ApiParam(value = "Ancillary Id in path param", required = true) @PathVariable("ancillaryId") Integer ancillaryId) throws DataSvcException {
 		logger.debug("Inside getAncillary()");
 		ancillaryMgmtBO.deleteAncillaryDetails(ancillaryId);
 		return new ResponseEntity<>(HttpStatus.OK);

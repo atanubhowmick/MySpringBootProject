@@ -3,7 +3,10 @@
  */
 package com.atanu.java.springboot.resource;
 
+import java.sql.SQLException;
+
 import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionException;
@@ -15,6 +18,7 @@ import com.atanu.java.springboot.exception.DataSvcException;
 import com.atanu.java.springboot.logger.ApplicationLogger;
 import com.atanu.java.springboot.model.FaultDO;
 import com.atanu.java.springboot.utils.CommonUtils;
+import com.atanu.java.springboot.utils.StringUtils;
 
 /**
  * @author Atanu Bhowmick
@@ -32,7 +36,19 @@ public class GlobalExceptionHandler {
 		FaultDO fault = CommonUtils.createFaultDOForError(ex.getErrorCode(), ex.getErrorMsg());
 		return new ResponseEntity<>(fault, ex.getHttpStatus());
 	}
-
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<FaultDO> handleConstraintViolationException(ConstraintViolationException ex) {
+		logger.error("Handling ConstraintViolationException... ", ex);
+		SQLException e = ex.getSQLException();
+		String errorMsg = e.getMessage();
+		if(StringUtils.isEmpty(errorMsg)) {
+			errorMsg = Constants.ERROR_CODE_2007;
+		}
+		FaultDO fault = CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2007, errorMsg);
+		return new ResponseEntity<>(fault, HttpStatus.CONFLICT);
+	}
+	
 	@ExceptionHandler(HibernateException.class)
 	public ResponseEntity<FaultDO> handleHibernateExceptionException(HibernateException ex) {
 		logger.error("Handling HibernateException... ", ex);
@@ -53,5 +69,4 @@ public class GlobalExceptionHandler {
 		FaultDO fault = CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2005, Constants.ERROR_MSG_2005);
 		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
 }

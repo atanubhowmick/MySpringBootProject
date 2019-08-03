@@ -31,6 +31,7 @@ public class Constants {
 	public static final String ERROR_CODE_2004					= "2004";
 	public static final String ERROR_CODE_2005					= "2005";
 	public static final String ERROR_CODE_2006					= "2006";
+	public static final String ERROR_CODE_2007					= "2007";
 	
 	public static final String ERROR_MSG_2001					= "Database error. Unable to retrieve data.";
 	public static final String ERROR_MSG_2002					= "Origin/Destination airport can't be empty.";
@@ -38,4 +39,5 @@ public class Constants {
 	public static final String ERROR_MSG_2004					= "Ancillary details is not available for the airports.";
 	public static final String ERROR_MSG_2005					= "Unexcepted error occurred. Please try again later.";
 	public static final String ERROR_MSG_2006					= "No Data Found";
+	public static final String ERROR_MSG_2007					= "Requested data already present";
 }
