@@ -25,6 +25,12 @@ import com.atanu.java.springboot.model.PreferredAncillaryResponse;
 import com.atanu.java.springboot.utils.CommonUtils;
 import com.atanu.java.springboot.utils.StringUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * @author ATANU
  *
@@ -32,6 +38,7 @@ import com.atanu.java.springboot.utils.StringUtils;
 
 @RestController
 @RequestMapping(value = Constants.PATH_ANCILLARY)
+@Api(value = "Ancillary Management System")
 public class AncillaryDataSvc {
 
 	@Autowired
@@ -39,9 +46,14 @@ public class AncillaryDataSvc {
 
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
 
+	@ApiOperation(value = "Get list of the avaliable ancilarries between two airports", response = PreferredAncillaryResponse.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
+			@ApiResponse(code = 404, message = "No data found"),
+			@ApiResponse(code = 500, message = "Unexpected error occured. Please try again later") })
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY_BY_AIRPORTS, method = RequestMethod.GET, consumes = {
 			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<PreferredAncillaryResponse> getAllAncillaryByAirports(
+			@ApiParam(value = "Send origin and destination airport code in the request", required = true) 
 			@RequestBody PreferredAncillaryRequest ancillaryRequest) {
 
 		logger.debug("Inside getAllAncillary()");
@@ -90,22 +102,38 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get ancilarry by Id", response = AncillaryDetails.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
+			@ApiResponse(code = 404, message = "No data found"),
+			@ApiResponse(code = 500, message = "Unexpected error occured. Please try again later") })
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY + "/{ancillaryId}", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<AncillaryDetails> getAncillary(@PathVariable("ancillaryId") int ancillaryId) {
+	public ResponseEntity<AncillaryDetails> getAncillary(
+			@ApiParam(value = "Ancillary Id (Integer) in path param", required = true)
+			@PathVariable("ancillaryId") int ancillaryId) {
 		logger.debug("Inside getAncillary()");
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get ancilarry by Id", response = AncillaryDetails.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
+			@ApiResponse(code = 404, message = "No data found"),
+			@ApiResponse(code = 500, message = "Unexpected error occured. Please try again later") })
 	@RequestMapping(value = Constants.PATH_GET_ANCILLARY, method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<AncillaryDetails> getAncillaryById(@RequestParam(required = true) int ancillaryId) {
+	public ResponseEntity<AncillaryDetails> getAncillaryById(
+			@ApiParam(value = "Ancillary Id (Integer) in request param", required = true)
+			@RequestParam(required = true) int ancillaryId) {
 		logger.debug("Inside getAncillaryById()");
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get all ancilarries", response = List.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
+			@ApiResponse(code = 404, message = "No data found"),
+			@ApiResponse(code = 500, message = "Unexpected error occured. Please try again later") })
 	@RequestMapping(value = Constants.PATH_GET_ALL_ANCILLARY, method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<List<AncillaryDetails>> getAllAncillaries() {

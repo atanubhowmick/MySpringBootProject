@@ -5,22 +5,35 @@ package com.atanu.java.springboot.model;
 
 import java.io.Serializable;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author ATANU
  *
  */
+@ApiModel(value = "PreferredAncillaryRequest", 
+		description = "All details about Preferred Ancillary Request ")
 public class PreferredAncillaryRequest implements Serializable {
-	
-	/**
-	 * serialVersionUID
-	 */
+
 	private static final long serialVersionUID = 8841272737218591031L;
 
+	@ApiModelProperty(value = "Origin Airport Code", example = "ATL")
 	private String originAirportCode;
+	
+	@ApiModelProperty(value = "Origin Airport Code", example = "MSP")
 	private String destAirportCode;
+	
+	@ApiModelProperty(value = "Expected Ancillaries count present in the Response", example = "5")
 	private int ancillaryCount;
+	
+	@ApiModelProperty(value = "Ancillary Id", example = "101")
 	private int ancillaryId;
+	
+	@ApiModelProperty(value = "Ancillary Name", example = "Wifi")
 	private String ancillaryName;
+	
+	@ApiModelProperty(value = "Ancillary Description", example = "WiFi available here")
 	private String ancillaryDesc;
 
 	public String getOriginAirportCode() {
