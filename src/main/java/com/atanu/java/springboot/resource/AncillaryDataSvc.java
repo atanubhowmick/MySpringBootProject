@@ -22,9 +22,7 @@ import com.atanu.java.springboot.exception.DataSvcException;
 import com.atanu.java.springboot.logger.ApplicationLogger;
 import com.atanu.java.springboot.model.AncillaryDetails;
 import com.atanu.java.springboot.model.FaultDO;
-import com.atanu.java.springboot.model.PreferredAncillaryRequest;
 import com.atanu.java.springboot.model.PreferredAncillaryResponse;
-import com.atanu.java.springboot.utils.CommonUtils;
 import com.atanu.java.springboot.utils.StringUtils;
 
 import io.swagger.annotations.Api;
@@ -57,7 +55,8 @@ public class AncillaryDataSvc {
 	@RequestMapping(value = "/{ancillaryId}", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<AncillaryDetails> getAncillary(
-			@ApiParam(value = "Ancillary Id in path param", required = true) @PathVariable("ancillaryId") Integer ancillaryId)
+			@ApiParam(value = "Ancillary Id in path param", required = true)
+			@PathVariable("ancillaryId") Integer ancillaryId)
 			throws DataSvcException {
 		logger.debug("Inside getAncillary()");
 		AncillaryDetails ancillaryDetails = ancillaryMgmtBO.getAncillaryDetailsById(ancillaryId);
@@ -80,7 +79,8 @@ public class AncillaryDataSvc {
 	}
 
 	@ApiOperation(value = "Get all ancilarries", response = List.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
 			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) 
 	})
@@ -95,55 +95,26 @@ public class AncillaryDataSvc {
 	@ApiOperation(value = "Get list of the avaliable ancilarries between two airports", response = PreferredAncillaryResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
+			@ApiResponse(code = 400, message = Constants.ERROR_MSG_2002, response = FaultDO.class),
 			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
 			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2005, response = FaultDO.class) 
 	})
-	@RequestMapping(value = Constants.PATH_GET_ANCILLARY_BY_AIRPORTS, method = RequestMethod.GET, consumes = {
-			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = Constants.PATH_GET_ANCILLARY_BY_AIRPORTS, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<PreferredAncillaryResponse> getAllAncillaryByAirports(
-			@ApiParam(value = "Send origin and destination airport code in the request", required = true) 
-			@RequestBody PreferredAncillaryRequest ancillaryRequest) {
-		logger.debug("Inside getAllAncillary()");
-		PreferredAncillaryResponse response = new PreferredAncillaryResponse();
-		if (null == ancillaryRequest || StringUtils.isEmpty(ancillaryRequest.getOriginAirportCode())
-				|| StringUtils.isEmpty(ancillaryRequest.getDestAirportCode())) {
-
-			logger.debug("Invalid request. Origin/Destination airport can't be empty... {}", ancillaryRequest);
-
-			if (ancillaryRequest != null && ancillaryRequest.getOriginAirportCode() != null) {
-				response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
-			}
-			if (ancillaryRequest != null && ancillaryRequest.getDestAirportCode() != null) {
-				response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
-			}
-			response.setFault(CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2001, Constants.ERROR_MSG_2001));
+			@ApiParam(value = "Send origin airport code in the query param", required = true) 
+			@RequestParam(required = true) String originAirportCode, 
+			@ApiParam(value = "Send destination airport code in the query param", required = true)
+			@RequestParam(required = true) String destAirporCode) throws DataSvcException {
+		logger.debug("Inside getAllAncillaryByAirports()");
+		PreferredAncillaryResponse response = null;
+		if (StringUtils.isEmpty(originAirportCode) || StringUtils.isEmpty(destAirporCode)) {
+			logger.debug("Invalid request. Origin/Destination airport code is empty");
+			throw new DataSvcException(Constants.ERROR_CODE_2002, Constants.ERROR_MSG_2002, HttpStatus.BAD_REQUEST);
 		} else {
-			try {
-				response = ancillaryMgmtBO.getPreferredAncillariesByAirports(ancillaryRequest);
-				if (null == response) {
-					logger.debug("Airport details are not available in database: {}", ancillaryRequest);
-					response = new PreferredAncillaryResponse();
-					response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
-					response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
-					response.setFault(
-							CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2002, Constants.ERROR_MSG_2002));
-				} else if (response.getPreferredAncillaries().isEmpty()) {
-					logger.debug("No data found for the given airport: {}", ancillaryRequest);
-					response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
-					response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
-					response.setFault(
-							CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2003, Constants.ERROR_MSG_2003));
-				} else {
-					logger.debug("Data processing successful.");
-					response.setFault(CommonUtils.createFaultDOForSuccess());
-				}
-			} catch (Exception e) {
-				response = new PreferredAncillaryResponse();
-				response.setOriginAirportCode(ancillaryRequest.getOriginAirportCode());
-				response.setDestAirportCode(ancillaryRequest.getDestAirportCode());
-				response.setFault(
-						CommonUtils.createFaultDOForError(Constants.ERROR_CODE_2004, Constants.ERROR_MSG_2004));
-				logger.error("Exception occurred in getAllAncillaryByAirports: ", e);
+			response = ancillaryMgmtBO.getPreferredAncillariesByAirports(originAirportCode, destAirporCode);
+			if (null == response || response.getPreferredAncillaries().isEmpty()) {
+				logger.debug("No ancillary found between {} and {}", originAirportCode , destAirporCode);
+				throw new DataSvcException(Constants.ERROR_CODE_2006, Constants.ERROR_MSG_2006, HttpStatus.NOT_FOUND);
 			}
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -160,7 +131,7 @@ public class AncillaryDataSvc {
 	public ResponseEntity<AncillaryDetails> saveAncillary(
 			@ApiParam(value = "Ancillary Details in RequestBody", required = true) 
 			@RequestBody(required = true) AncillaryDetails ancillaryDetails) throws DataSvcException {
-		logger.debug("Inside getAncillary()");
+		logger.debug("Inside saveAncillary()");
 		ancillaryDetails = ancillaryMgmtBO.saveAncillaryDetails(ancillaryDetails);
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
@@ -175,7 +146,7 @@ public class AncillaryDataSvc {
 	public ResponseEntity<AncillaryDetails> updateAncillary(
 			@ApiParam(value = "Ancillary Details in RequestBody", required = true) 
 			@RequestBody(required = true) AncillaryDetails ancillaryDetails) throws DataSvcException {
-		logger.debug("Inside getAncillary()");
+		logger.debug("Inside updateAncillary()");
 		ancillaryMgmtBO.updateAncillaryDetails(ancillaryDetails);
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
@@ -189,7 +160,7 @@ public class AncillaryDataSvc {
 			+ "/{ancillaryId}", method = RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> deleteAncillary(
 			@ApiParam(value = "Ancillary Id in path param", required = true) @PathVariable("ancillaryId") Integer ancillaryId) throws DataSvcException {
-		logger.debug("Inside getAncillary()");
+		logger.debug("Inside deleteAncillary()");
 		ancillaryMgmtBO.deleteAncillaryDetails(ancillaryId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

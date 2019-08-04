@@ -40,10 +40,10 @@ public class AncillaryMgmtBO {
 	 * @return PreferredAncillaryResponse
 	 * @throws DataSvcException 
 	 */
-	public PreferredAncillaryResponse getPreferredAncillariesByAirports(PreferredAncillaryRequest ancillaryRequest) throws DataSvcException {
+	public PreferredAncillaryResponse getPreferredAncillariesByAirports(String originAirportCode, String destAirporCode) throws DataSvcException {
 		logger.debug("Inside getDestinationDetailsByAirportCode()");
 		List<PreferredAncillaryEntity> prefferedAncillaryList = ancillaryDAO.getPreferredAncillariesByAirports(
-						ancillaryRequest.getOriginAirportCode(), ancillaryRequest.getDestAirportCode());
+				originAirportCode, destAirporCode);
 		return entityConverter.convertPreferredAncillaryEntityToPreferredAncillaryResponse(prefferedAncillaryList);
 	}
 

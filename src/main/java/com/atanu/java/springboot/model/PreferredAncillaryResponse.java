@@ -29,9 +29,6 @@ public class PreferredAncillaryResponse implements Serializable {
 	
 	@ApiModelProperty(value = "List of Preffered Ancillaries")
 	private List<AncillaryDetails> preferredAncillaries;
-	
-	@ApiModelProperty(value = "fault")
-	private FaultDO fault;
 
 	public String getOriginAirportCode() {
 		return originAirportCode;
@@ -54,14 +51,6 @@ public class PreferredAncillaryResponse implements Serializable {
 			preferredAncillaries = new ArrayList<AncillaryDetails>();
 		}
 		return preferredAncillaries;
-	}
-
-	public FaultDO getFault() {
-		return fault;
-	}
-
-	public void setFault(FaultDO fault) {
-		this.fault = fault;
 	}
 
 }

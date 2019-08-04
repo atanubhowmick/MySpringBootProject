@@ -45,7 +45,6 @@ public class AncillaryDAO {
 		} catch (Exception e) {
 			throw new DataSvcException(Constants.ERROR_CODE_2001, Constants.ERROR_MSG_2001, e);
 		}
-		
 		return preferredAncilaries;
 	}
 	

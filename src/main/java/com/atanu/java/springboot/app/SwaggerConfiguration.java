@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.atanu.java.springboot.config;
+package com.atanu.java.springboot.app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
