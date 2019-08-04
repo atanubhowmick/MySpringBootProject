@@ -20,7 +20,6 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import com.atanu.java.springboot.logger.ApplicationLogger;
-import com.atanu.java.springboot.resource.AncillaryDataSvc;
 
 /**
  * 
@@ -35,7 +34,7 @@ import com.atanu.java.springboot.resource.AncillaryDataSvc;
         HibernateJpaAutoConfiguration.class })
 public class MySpringBootApp {
 
-	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
+	private static final ApplicationLogger logger = new ApplicationLogger(MySpringBootApp.class);
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MySpringBootApp.class, args);
