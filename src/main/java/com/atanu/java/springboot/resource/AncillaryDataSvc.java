@@ -22,8 +22,10 @@ import com.atanu.java.springboot.exception.DataSvcException;
 import com.atanu.java.springboot.logger.ApplicationLogger;
 import com.atanu.java.springboot.model.AncillaryDetails;
 import com.atanu.java.springboot.model.FaultDO;
+import com.atanu.java.springboot.model.PreferredAncillaryRequest;
 import com.atanu.java.springboot.model.PreferredAncillaryResponse;
 import com.atanu.java.springboot.utils.StringUtils;
+import com.atanu.java.springboot.validator.RequestValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +46,9 @@ public class AncillaryDataSvc {
 	@Autowired
 	private AncillaryMgmtBO ancillaryMgmtBO;
 
+	@Autowired
+	RequestValidator requestValidator;
+	
 	private static final ApplicationLogger logger = new ApplicationLogger(AncillaryDataSvc.class);
 
 	@ApiOperation(value = "Get ancilarry by Id", response = AncillaryDetails.class)
@@ -116,6 +121,30 @@ public class AncillaryDataSvc {
 				logger.debug("No ancillary found between {} and {}", originAirportCode , destAirporCode);
 				throw new DataSvcException(Constants.ERROR_CODE_2006, Constants.ERROR_MSG_2006, HttpStatus.NOT_FOUND);
 			}
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	//TODO
+	@ApiOperation(value = "Save Preferred Ancillary b/w two Airports", response = PreferredAncillaryResponse.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
+			@ApiResponse(code = 400, message = Constants.ERROR_MSG_2002, response = FaultDO.class),
+			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
+			@ApiResponse(code = 500, message = Constants.ERROR_MSG_2008, response = FaultDO.class) 
+	})
+	@RequestMapping(value = Constants.PATH_SAVE_PREFERRED_ANCILLARY, method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<PreferredAncillaryResponse> savePreferredAncillary(
+			@ApiParam(value = "Send Preferred Ancillary Request", required = true) 
+			@RequestBody(required = true) PreferredAncillaryRequest request) throws DataSvcException {
+		logger.debug("Inside getAllAncillaryByAirports()");
+		PreferredAncillaryResponse response = null;
+		requestValidator.validatePreferredAncillaryRequest(request);
+		ancillaryMgmtBO.updatePreferredAncillary(request);
+		response = ancillaryMgmtBO.getPreferredAncillariesByAirports(request.getOriginAirportCode(), request.getDestAirportCode());
+		if (null == response || response.getPreferredAncillaries().isEmpty()) {
+			logger.debug("No ancillary found between {} and {}", request.getOriginAirportCode(), request.getDestAirportCode());
+			throw new DataSvcException(Constants.ERROR_CODE_2008, Constants.ERROR_MSG_2008);
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

@@ -18,22 +18,22 @@ public class PreferredAncillaryRequest implements Serializable {
 
 	private static final long serialVersionUID = 8841272737218591031L;
 
-	@ApiModelProperty(value = "Origin Airport Code", example = "ATL")
+	@ApiModelProperty(value = "Origin Airport Code", example = "ATL", required = true)
 	private String originAirportCode;
 	
-	@ApiModelProperty(value = "Origin Airport Code", example = "MSP")
+	@ApiModelProperty(value = "Origin Airport Code", example = "MSP", required = true)
 	private String destAirportCode;
 	
-	@ApiModelProperty(value = "Expected Ancillaries count present in the Response", example = "5")
-	private int ancillaryCount;
+	@ApiModelProperty(value = "Total count available", example = "5", required = true)
+	private Integer ancillaryCount;
 	
-	@ApiModelProperty(value = "Ancillary Id", example = "101")
+	@ApiModelProperty(value = "Ancillary Id", example = "101", required = true)
 	private Integer ancillaryId;
 	
-	@ApiModelProperty(value = "Ancillary Name", example = "Wifi")
+	@ApiModelProperty(value = "Ancillary Name", example = "Wifi", required = true)
 	private String ancillaryName;
 	
-	@ApiModelProperty(value = "Ancillary Description", example = "WiFi available here")
+	@ApiModelProperty(value = "Ancillary Description", example = "WiFi available here", required = true)
 	private String ancillaryDesc;
 
 	public String getOriginAirportCode() {
@@ -52,11 +52,11 @@ public class PreferredAncillaryRequest implements Serializable {
 		this.destAirportCode = destAirportCode;
 	}
 	
-	public int getAncillaryCount() {
+	public Integer getAncillaryCount() {
 		return ancillaryCount;
 	}
 
-	public void setAncillaryCount(int ancillaryCount) {
+	public void setAncillaryCount(Integer ancillaryCount) {
 		this.ancillaryCount = ancillaryCount;
 	}
 	
