@@ -10,8 +10,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,8 +31,8 @@ public class AncillaryDetailsEntity implements Serializable {
 	private List<PreferredAncillaryEntity> preferredAncillaries = new ArrayList<PreferredAncillaryEntity>();
 
 	/*@SequenceGenerator(name = "ANC_ID_GEN", initialValue = 101, allocationSize = 100, sequenceName = "ANCILLARY_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ANC_ID_GEN")*/
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ANC_ID_GEN")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)*/
 	@Id
 	@Column(name = "ANCILLARY_ID", nullable = true)
 	public Integer getAncillaryId() {
