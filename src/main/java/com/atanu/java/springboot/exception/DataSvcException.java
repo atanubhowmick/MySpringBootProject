@@ -6,14 +6,11 @@ package com.atanu.java.springboot.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- * @author ATANU
+ * @author Atanu Bhowmick
  *
  */
 public class DataSvcException extends Exception {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = -5677865972051310907L;
 
 	private String errorCode;
