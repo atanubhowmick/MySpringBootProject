@@ -48,9 +48,8 @@ public class PreferredAncillaryResponse implements Serializable {
 
 	public List<AncillaryDetails> getPreferredAncillaries() {
 		if (null == preferredAncillaries) {
-			preferredAncillaries = new ArrayList<AncillaryDetails>();
+			preferredAncillaries = new ArrayList<>();
 		}
 		return preferredAncillaries;
 	}
-
 }

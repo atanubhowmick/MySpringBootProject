@@ -83,6 +83,7 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
+	
 	@ApiOperation(value = "Get all ancilarries", response = List.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully retrieved the ancillary"),
@@ -97,6 +98,7 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(ancillaries, HttpStatus.OK);
 	}
 
+	
 	@ApiOperation(value = "Get list of the avaliable ancilarries between two airports", response = PreferredAncillaryResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
@@ -125,7 +127,7 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	//TODO
+	
 	@ApiOperation(value = "Save Preferred Ancillary b/w two Airports", response = PreferredAncillaryResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully retrieved ancillary list"),
@@ -149,6 +151,7 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	
 	@ApiOperation(value = "Save Ancilarry", response = AncillaryDetails.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully saved the ancillary", response = AncillaryDetails.class),
@@ -165,6 +168,7 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
+	
 	@ApiOperation(value = "Update Ancilarry", response = AncillaryDetails.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully saved the ancillary", response = AncillaryDetails.class),
@@ -180,6 +184,7 @@ public class AncillaryDataSvc {
 		return new ResponseEntity<>(ancillaryDetails, HttpStatus.OK);
 	}
 
+	
 	@ApiOperation(value = "Delete Ancilarry by Id")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully deleted the ancillary"),
 			@ApiResponse(code = 404, message = Constants.ERROR_MSG_2006, response = FaultDO.class),
