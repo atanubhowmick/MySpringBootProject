@@ -32,12 +32,12 @@ import com.atanu.java.springboot.logger.ApplicationLogger;
         DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class })
-public class MySpringBootApp {
+public class DataSvcSpringBootApp {
 
-	private static final ApplicationLogger logger = new ApplicationLogger(MySpringBootApp.class);
+	private static final ApplicationLogger logger = new ApplicationLogger(DataSvcSpringBootApp.class);
 	
 	public static void main(String[] args) {
-		SpringApplication.run(MySpringBootApp.class, args);
+		SpringApplication.run(DataSvcSpringBootApp.class, args);
 	}
 
 	@Autowired

@@ -11,14 +11,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @author ATANU
+ * @author Atanu Bhowmick
  *
  */
 @ApiModel(value = "FaultDO", description = "Response status with error if any")
 public class FaultDO implements Serializable {
-	/**
-	 * serialVersionUID
-	 */
+
 	private static final long serialVersionUID = 6346004910126077137L;
 	
 	@ApiModelProperty(value = "Response status", example = Constants.ERROR)

@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @author ATANU
+ * @author Atanu Bhowmick
  *
  */
 
@@ -48,9 +48,8 @@ public class PreferredAncillaryResponse implements Serializable {
 
 	public List<AncillaryDetails> getPreferredAncillaries() {
 		if (null == preferredAncillaries) {
-			preferredAncillaries = new ArrayList<AncillaryDetails>();
+			preferredAncillaries = new ArrayList<>();
 		}
 		return preferredAncillaries;
 	}
-
 }
