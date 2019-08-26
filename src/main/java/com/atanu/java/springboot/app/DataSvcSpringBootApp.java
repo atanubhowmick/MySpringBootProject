@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -27,6 +28,7 @@ import com.atanu.java.springboot.logger.ApplicationLogger;
  *
  */
 
+@EnableEurekaClient
 @SpringBootApplication(scanBasePackages = { "com.atanu.java.springboot" })
 @EnableAutoConfiguration(exclude = {
         DataSourceAutoConfiguration.class,
