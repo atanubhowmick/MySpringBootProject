@@ -11,10 +11,10 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.atanu.java.springboot</groupId>
-	<artifactId>DataSvcBoot</artifactId>
+	<artifactId>data-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>DataSvcBoot</name>
+	<name>data-svc</name>
 	<description>My Project for Spring Boot</description>
 
 	<properties>
