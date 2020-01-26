@@ -120,6 +120,30 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<boot.profile>local</boot.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<boot.profile>dev</boot.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<boot.profile>qa</boot.profile>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
